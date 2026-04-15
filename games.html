@@ -134,7 +134,7 @@
 </audio>
 <a href="dashboard.html" class="back-btn">← Dashboard</a>
 <div id="musicPill">
-  <span class="note">🎵</span><span class="label">Our Song</span>
+  <span class="note">🎵</span><span class="label">Song</span>
   <button id="musicBtn" onclick="toggleMusic()">▶</button>
 </div>
 
@@ -154,7 +154,7 @@
   <div class="game-card">
     <div class="game-title">💕 Do You Love Me?</div>
     <div class="game-subtitle">An important question, with only one right answer…</div>
-    <div class="love-question" id="loveQ">Niharika, do you love Aru? 🥺</div>
+    <div class="love-question" id="loveQ">Niharika, do you love Ashraful? 🥺</div>
     <div class="answer-btns">
       <button class="ans-btn ans-yes" onclick="answerYes()">Yes! ❤️</button>
       <button class="ans-btn ans-no" id="noBtn" onclick="moveNoBtn()" onmouseover="moveNoBtn()">No 😶</button>
@@ -170,7 +170,7 @@
     <div class="game-subtitle">Find out how perfectly matched you are</div>
     <div class="calc-input-row">
       <input id="name1" placeholder="Your name (Niharika)" value="Niharika">
-      <input id="name2" placeholder="Your lover's name (Aru)" value="Aru">
+      <input id="name2" placeholder="Your lover's name (Ashraful)" value="Ashraful">
     </div>
     <button class="game-btn" onclick="calculateLove()">Calculate Our Love 💖</button>
     <div class="calc-result-wrap" id="calcResult">
@@ -188,7 +188,7 @@
     <div class="game-subtitle">Find all matching pairs — test your memory!</div>
     <div class="mem-score" id="memScore">Pairs found: 0 / 8</div>
     <div class="memory-grid" id="memGrid"></div>
-    <div class="mem-win" id="memWin">🎉 You matched them all! Just like Aru & Niharika — a perfect match! 💖</div>
+    <div class="mem-win" id="memWin">🎉 You matched them all! Just like Ashraful & Niharika — a perfect match! 💖</div>
     <button class="game-btn" onclick="initMemory()" style="margin-top:16px">Shuffle & Restart 🔀</button>
   </div>
 </div>
@@ -203,9 +203,9 @@ function showGame(id, el) {
 
 // ── GAME 1 ──
 const yesLines = [
-  { q:"I knew it!! 🥹 You make my whole world glow, Niharika!", r:"Aru is doing a little happy dance right now. And crying. Happily. 💖 You are everything." },
-  { q:"Say it again? I just want to hear it forever 🌹", r:"Your yes is the most beautiful word Aru has ever heard. Ever. EVER. 💕" },
-  { q:"See? I knew you did 😊💘", r:"Aru is smiling so wide right now. You are his whole heart. 🌹" }
+  { q:"I knew it!! 🥹 You make my whole world glow, Niharika!", r:"Ashraful is doing a little happy dance right now. And crying. Happily. 💖 You are everything." },
+  { q:"Say it again? I just want to hear it forever 🌹", r:"Your yes is the most beautiful word Ashraful has ever heard. Ever. EVER. 💕" },
+  { q:"See? I knew you did 😊💘", r:"Ashraful is smiling so wide right now. You are his whole heart. 🌹" }
 ];
 let yesCount = 0;
 const noPositions = [[null,null],[40,null],[null,40],[40,40],[null,null]];
