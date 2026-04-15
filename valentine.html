@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Valentine Week 🌹 — For Niharika</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rose: #e8336d; --blush: #fce4ec; --petal: #f8bbd0;
+      --deep: #880e4f; --soft: #fff0f5; --gold: #f4a7b9;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Lato', sans-serif; background: var(--soft); color: var(--deep); min-height: 100vh; overflow-x: hidden; }
+
+    .petal-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .petal { position: absolute; animation: fallPetal linear infinite; opacity: 0.5; }
+    @keyframes fallPetal { 0%{transform:translateY(-60px) rotate(0deg);opacity:.6} 100%{transform:translateY(110vh) rotate(540deg);opacity:0} }
+
+    /* BACK */
+    .back-btn {
+      position: fixed; top: 16px; left: 16px; z-index: 9999;
+      background: white; border: 2px solid var(--petal); color: var(--rose);
+      border-radius: 50px; padding: 8px 18px; font-size: 0.9rem;
+      cursor: pointer; box-shadow: 0 4px 16px rgba(232,51,109,.15);
+      transition: all .25s; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .back-btn:hover { background: var(--rose); color: white; border-color: var(--rose); }
+
+    /* MUSIC */
+    #musicPill { position:fixed;bottom:18px;right:18px;background:white;border-radius:50px;padding:10px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 24px rgba(232,51,109,.25);z-index:9999; }
+    #musicPill .note{font-size:1.1rem;animation:noteBounce 1.2s ease-in-out infinite}
+    @keyframes noteBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+    #musicPill button{background:var(--rose);color:white;border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:1rem;}
+    #musicPill span.label{font-size:.75rem;color:var(--rose);font-weight:600;letter-spacing:.5px}
+
+    /* HEADER */
+    .v-header { text-align:center; padding: 60px 20px 20px; position:relative; z-index:10; }
+    .v-header h1 { font-family:'Playfair Display',serif; font-size:clamp(2rem,7vw,3.2rem); color:var(--rose); text-shadow:0 2px 20px rgba(232,51,109,.3); }
+    .v-header p { font-family:'Playfair Display',serif; font-style:italic; opacity:.7; margin-top:8px; font-size:clamp(.9rem,2.5vw,1.1rem); }
+
+    /* DAYS GRID */
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%,310px),1fr));
+      gap: 20px; padding: 20px; max-width: 780px; margin: 0 auto;
+      position: relative; z-index: 10;
+    }
+
+    .day-card {
+      background: white; border-radius: 24px; padding: 28px 20px;
+      text-align: center; box-shadow: 0 8px 30px rgba(232,51,109,.12);
+      cursor: pointer; border: 2px solid var(--petal);
+      transition: all .35s cubic-bezier(.34,1.56,.64,1);
+      position: relative; overflow: hidden;
+      animation: cardIn .5s cubic-bezier(.16,1,.3,1) both;
+    }
+    .day-card:nth-child(1){animation-delay:.05s}.day-card:nth-child(2){animation-delay:.1s}
+    .day-card:nth-child(3){animation-delay:.15s}.day-card:nth-child(4){animation-delay:.2s}
+    .day-card:nth-child(5){animation-delay:.25s}.day-card:nth-child(6){animation-delay:.3s}
+    .day-card:nth-child(7){animation-delay:.35s}.day-card:nth-child(8){animation-delay:.4s}
+    @keyframes cardIn { from{opacity:0;transform:translateY(40px) scale(.95)} to{opacity:1;transform:translateY(0) scale(1)} }
+
+    .day-card::before { content:''; position:absolute;top:0;left:0;right:0;height:4px; border-radius:24px 24px 0 0; }
+    .day-card.rose::before{background:linear-gradient(90deg,#e8336d,#c2185b)}
+    .day-card.propose::before{background:linear-gradient(90deg,#f06292,#e91e63)}
+    .day-card.chocolate::before{background:linear-gradient(90deg,#8d6e63,#5d4037)}
+    .day-card.teddy::before{background:linear-gradient(90deg,#ff8a65,#ff5722)}
+    .day-card.promise::before{background:linear-gradient(90deg,#7e57c2,#512da8)}
+    .day-card.hug::before{background:linear-gradient(90deg,#4db6ac,#00796b)}
+    .day-card.kiss::before{background:linear-gradient(90deg,#f48fb1,#c2185b)}
+    .day-card.valentine::before{background:linear-gradient(90deg,#e8336d,#880e4f)}
+
+    .day-card:hover { transform:translateY(-8px) scale(1.02); box-shadow:0 20px 45px rgba(232,51,109,.22); border-color:var(--rose); }
+    .day-card:active { transform:scale(.97); }
+
+    .day-emoji { font-size:3rem; margin-bottom:10px; display:block; animation:emojiFloat 2.5s ease-in-out infinite; }
+    .day-card:nth-child(odd) .day-emoji { animation-direction: alternate; }
+    @keyframes emojiFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+    .day-name { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--rose); margin-bottom:4px; }
+    .day-date { font-size:.8rem; color:#bbb; letter-spacing:.5px; }
+
+    /* ── LETTER MODAL ── */
+    .modal-overlay {
+      display:none; position:fixed; inset:0;
+      background:rgba(0,0,0,.55); z-index:1000;
+      align-items:flex-end; justify-content:center;
+      padding: 0;
+    }
+    .modal-overlay.open { display:flex; animation:modalBgIn .3s; }
+    @keyframes modalBgIn { from{opacity:0} to{opacity:1} }
+
+    .letter-sheet {
+      background:white; width:100%; max-width:600px;
+      border-radius:28px 28px 0 0;
+      padding: 32px 24px 40px;
+      max-height: 88vh; overflow-y: auto;
+      animation: sheetUp .45s cubic-bezier(.16,1,.3,1);
+      position: relative;
+    }
+    @keyframes sheetUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+
+    .sheet-handle { width:42px; height:5px; background:var(--petal); border-radius:10px; margin:0 auto 20px; }
+
+    .letter-anim-area {
+      min-height: 80px; display:flex; justify-content:center; align-items:center;
+      font-size: 3rem; margin-bottom: 16px; position:relative;
+    }
+
+    .letter-title {
+      font-family:'Playfair Display',serif; font-size:1.5rem;
+      color:var(--rose); text-align:center; margin-bottom:6px;
+    }
+    .letter-date-label { text-align:center; font-size:.8rem; color:#ccc; letter-spacing:.5px; margin-bottom:20px; }
+
+    .letter-body {
+      font-family:'Playfair Display',serif; font-style:italic;
+      font-size:1.05rem; line-height:1.85;
+      color: #555; white-space:pre-wrap;
+      border-left:3px solid var(--petal); padding-left:16px;
+    }
+
+    .close-sheet {
+      position:absolute; top:20px; right:20px;
+      background:var(--blush); border:none; color:var(--rose);
+      width:36px; height:36px; border-radius:50%; font-size:1.1rem;
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+    }
+
+    /* FLOATING ANIMATIONS inside modal */
+    .float-anim span {
+      position:absolute; font-size:1.8rem;
+      animation: floatItem 3s ease-in-out infinite;
+    }
+    @keyframes floatItem {
+      0%,100%{transform:translateY(0) rotate(-5deg);opacity:.8}
+      50%{transform:translateY(-20px) rotate(5deg);opacity:1}
+    }
+
+    /* CLICK HEARTS */
+    .click-heart{position:fixed;pointer-events:none;z-index:9998;font-size:2rem;animation:chAnim 1.5s forwards}
+    @keyframes chAnim{0%{opacity:1;transform:translateY(0) scale(.5)}30%{transform:translateY(-30px) scale(1.3)}100%{opacity:0;transform:translateY(-100px) scale(.8)}}
+  </style>
+</head>
+<body>
+<div class="petal-bg" id="petalBg"></div>
+<audio id="bgMusic" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+<a href="dashboard.html" class="back-btn">← Dashboard</a>
+<div id="musicPill">
+  <span class="note">🎵</span><span class="label">Our Song</span>
+  <button id="musicBtn" onclick="toggleMusic()">▶</button>
+</div>
+
+<div class="v-header">
+  <h1>Valentine Week 🌹</h1>
+  <p>8 days of love, especially for you, Niharika</p>
+</div>
+
+<div class="days-grid">
+  <div class="day-card rose"    onclick="openLetter(0)"><span class="day-emoji">🌹</span><div class="day-name">Rose Day</div><div class="day-date">Feb 7</div></div>
+  <div class="day-card propose"  onclick="openLetter(1)"><span class="day-emoji">💍</span><div class="day-name">Propose Day</div><div class="day-date">Feb 8</div></div>
+  <div class="day-card chocolate" onclick="openLetter(2)"><span class="day-emoji">🍫</span><div class="day-name">Chocolate Day</div><div class="day-date">Feb 9</div></div>
+  <div class="day-card teddy"    onclick="openLetter(3)"><span class="day-emoji">🧸</span><div class="day-name">Teddy Day</div><div class="day-date">Feb 10</div></div>
+  <div class="day-card promise"  onclick="openLetter(4)"><span class="day-emoji">🤝</span><div class="day-name">Promise Day</div><div class="day-date">Feb 11</div></div>
+  <div class="day-card hug"      onclick="openLetter(5)"><span class="day-emoji">🤗</span><div class="day-name">Hug Day</div><div class="day-date">Feb 12</div></div>
+  <div class="day-card kiss"     onclick="openLetter(6)"><span class="day-emoji">💋</span><div class="day-name">Kiss Day</div><div class="day-date">Feb 13</div></div>
+  <div class="day-card valentine" onclick="openLetter(7)"><span class="day-emoji">❤️</span><div class="day-name">Valentine's Day</div><div class="day-date">Feb 14</div></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeLetterOutside(event)">
+  <div class="letter-sheet" id="letterSheet">
+    <div class="sheet-handle"></div>
+    <button class="close-sheet" onclick="closeLetter()">✕</button>
+    <div class="letter-anim-area" id="letterAnimArea"></div>
+    <div class="letter-title" id="letterTitle"></div>
+    <div class="letter-date-label" id="letterDateLabel"></div>
+    <div class="letter-body" id="letterBody"></div>
+  </div>
+</div>
+
+<script>
+const days = [
+  {
+    title: "Rose Day 🌹",
+    date: "February 7",
+    anims: ["🌹","🌹","🌷","🌸","🌹"],
+    letter: `My dearest Niharika,
+
+Today is Rose Day — and I wish I could hand you the most beautiful rose in the whole world.
+
+But then I realized... no rose could ever compare to you. You are the most beautiful thing that has ever bloomed in my life. Your smile is softer than any petal, and your heart is more fragrant than any garden.
+
+Every time I think of you, I imagine roses — deep, red, endlessly romantic roses — because that's what you make me feel. You make the world bloom.
+
+This rose I'm giving you today isn't just a flower. It's every tender feeling I carry for you, wrapped in crimson and love.
+
+Happy Rose Day, my love. You are my favourite rose.
+
+Forever yours,
+Aru 🌹`
+  },
+  {
+    title: "Propose Day 💍",
+    date: "February 8",
+    anims: ["💍","💐","❤️","✨","💍"],
+    letter: `My beautiful Niharika,
+
+There are a thousand things I am not good at, but loving you? Loving you is the one thing I know I could do perfectly for the rest of my life.
+
+I don't need grand speeches or rehearsed words. I just need you to know that when I picture my future, you are in every single version of it. By my side, in my thoughts, in my heart.
+
+So on this Propose Day, let me say it simply and from the deepest place inside me — Niharika, will you let me love you forever? Will you be the one I hold on to?
+
+I already know my answer. My heart said yes to you long before I even found the words.
+
+With all my love,
+Aru 💍`
+  },
+  {
+    title: "Chocolate Day 🍫",
+    date: "February 9",
+    anims: ["🍫","🍬","🧁","🍫","💝"],
+    letter: `My sweetest Niharika,
+
+They say chocolate is the sweetest thing in the world. But whoever said that had never met you.
+
+Every moment spent with you is richer, warmer, and more delicious than the finest chocolate. You have this way of making even ordinary days feel like something indulgent and special.
+
+On this Chocolate Day, I want to give you all the sweetness you deserve — not just today, but every single day. You deserve to be celebrated, to be adored, to have someone who looks at you and sees nothing but magic.
+
+That someone is me.
+
+Now please eat some chocolate and think of me. 🍫
+
+Sweetly yours,
+Aru 🍬`
+  },
+  {
+    title: "Teddy Day 🧸",
+    date: "February 10",
+    anims: ["🧸","🐻","🤍","🧸","💕"],
+    letter: `My darling Niharika,
+
+On Teddy Day, I wish I could be a teddy bear — soft, always there, something you could hold on to whenever the world feels too loud or too heavy.
+
+I want to be the comfort you reach for at the end of a long day. The warmth that reminds you that you are not alone. The gentle presence that says, without words, "I've got you."
+
+You deserve that kind of love — steady, warm, and unconditional. The kind that doesn't need to shout to be felt.
+
+Until I can be there in person, imagine this letter is a hug from your favourite teddy. And that teddy's name is Aru. 🧸
+
+Cuddly and yours,
+Aru 🤍`
+  },
+  {
+    title: "Promise Day 🤝",
+    date: "February 11",
+    anims: ["🤝","🕊️","⭐","🤝","💜"],
+    letter: `My dearest Niharika,
+
+Promises are easy to say. Keeping them — that's where love lives.
+
+So today, I don't want to make you a hundred promises I can't keep. I want to make you just a few that I will honour every single day.
+
+I promise to always make you feel seen.
+I promise to never let you feel alone.
+I promise to choose you, even on the hard days.
+I promise to love you not just when it's easy, but especially when it's not.
+
+These aren't just words, Niharika. They're the map of how I intend to love you.
+
+And I intend to love you for a very, very long time.
+
+Faithfully yours,
+Aru 🤝`
+  },
+  {
+    title: "Hug Day 🤗",
+    date: "February 12",
+    anims: ["🤗","💚","🌿","🤗","🫂"],
+    letter: `My lovely Niharika,
+
+Some days, the most powerful thing in the world is a hug. Not words. Not gifts. Just two arms that say, "You are safe here."
+
+On Hug Day, I want you to know that I have a hug saved up just for you. One that lasts long enough to chase away every worry you've been carrying. One that says I love you louder than anything I could ever speak.
+
+Being away from you means I can't wrap my arms around you right now — but know that every kind thought I send your way, every prayer for your happiness, every quiet moment I wish you were beside me — those are all hugs in disguise.
+
+One day, I'll hold you close and never let go.
+
+Warmly and tightly yours,
+Aru 🤗`
+  },
+  {
+    title: "Kiss Day 💋",
+    date: "February 13",
+    anims: ["💋","🌹","💄","💋","❤️"],
+    letter: `My beautiful Niharika,
+
+There are kisses that say hello, and kisses that say goodbye. But the one I'm saving for you?
+
+That one says everything in between.
+
+It says: I missed you. I love you. I'm so glad you exist. I can't believe I get to call you mine. You make me the happiest person alive.
+
+On this Kiss Day, I'm sending you a kiss through this letter — soft as a petal, warm as the morning sun, and full of every tender thing I feel for you.
+
+Close your eyes for just a moment. Did you feel it?
+
+That was me.
+
+Softly and lovingly yours,
+Aru 💋`
+  },
+  {
+    title: "Valentine's Day ❤️",
+    date: "February 14",
+    anims: ["❤️","💘","🌹","✨","💖"],
+    letter: `My heart, my Niharika,
+
+Happy Valentine's Day, love.
+
+Of all the days in the year, this one was made for people like us — people who have found something rare and real and worth celebrating.
+
+I want you to know that loving you isn't something I do once a year on February 14th. It's something I do every morning when I wake up. Every night before I sleep. In every small moment when your name crosses my mind and I smile without even meaning to.
+
+You are my Valentine — not just today, but every day I am lucky enough to exist beside you.
+
+Thank you for being you. Thank you for choosing us. Thank you for making love feel like the easiest thing in the world.
+
+This website is my heart, written in code. And every page of it is you.
+
+I love you, Niharika.
+
+Completely and forever yours,
+Aru ❤️`
+  }
+];
+
+let currentTyping = null;
+
+function openLetter(i) {
+  const d = days[i];
+  document.getElementById('letterTitle').textContent = d.title;
+  document.getElementById('letterDateLabel').textContent = d.date;
+  document.getElementById('letterBody').textContent = '';
+
+  // Animation area
+  const area = document.getElementById('letterAnimArea');
+  area.innerHTML = '';
+  const floatDiv = document.createElement('div');
+  floatDiv.className = 'float-anim';
+  floatDiv.style.position = 'relative'; floatDiv.style.width = '100%'; floatDiv.style.height = '80px';
+  d.anims.forEach((em, idx) => {
+    const s = document.createElement('span');
+    s.textContent = em;
+    s.style.left = (10 + idx * 18) + '%';
+    s.style.top = '10px';
+    s.style.animationDelay = (idx * 0.3) + 's';
+    floatDiv.appendChild(s);
+  });
+  area.appendChild(floatDiv);
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Type the letter
+  if (currentTyping) clearTimeout(currentTyping);
+  const el = document.getElementById('letterBody');
+  const text = d.letter;
+  let idx = 0;
+  function typeNext() {
+    if (idx < text.length) {
+      el.textContent += text[idx];
+      idx++;
+      currentTyping = setTimeout(typeNext, 22);
+    }
+  }
+  setTimeout(typeNext, 400);
+}
+
+function closeLetter() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  if (currentTyping) clearTimeout(currentTyping);
+}
+
+function closeLetterOutside(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeLetter();
+}
+
+// PETALS
+const emojis = ['🌸','🌺','🌹','💮','🪷'];
+const bg = document.getElementById('petalBg');
+for (let i = 0; i < 18; i++) {
+  const p = document.createElement('div');
+  p.className = 'petal';
+  p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+  p.style.left = Math.random() * 100 + 'vw';
+  p.style.animationDuration = (5 + Math.random() * 9) + 's';
+  p.style.animationDelay = (Math.random() * 10) + 's';
+  p.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+  bg.appendChild(p);
+}
+
+// CLICK HEARTS
+document.addEventListener('click', function(e) {
+  if (e.target.tagName === 'BUTTON' || e.target.closest('a')) return;
+  const el = document.createElement('div'); el.className = 'click-heart';
+  el.textContent = ['❤️','💖','💕','🌹'][Math.floor(Math.random()*4)];
+  el.style.left = e.clientX + 'px'; el.style.top = e.clientY + 'px';
+  document.body.appendChild(el); setTimeout(() => el.remove(), 1600);
+});
+
+// MUSIC
+const audio = document.getElementById('bgMusic');
+const btn = document.getElementById('musicBtn');
+let playing = false;
+function toggleMusic() {
+  if (playing) { audio.pause(); btn.textContent = '▶'; playing = false; }
+  else { audio.play(); btn.textContent = '⏸'; playing = true; }
+}
+document.addEventListener('click', function a() {
+  audio.volume = 0.4; audio.play().then(() => { playing = true; btn.textContent = '⏸'; }).catch(()=>{});
+  document.removeEventListener('click', a);
+}, { once: true });
+</script>
+</body>
+</html>

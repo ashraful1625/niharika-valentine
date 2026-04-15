@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>For Niharika 💕 — From Aru</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rose: #e8336d;
+      --blush: #fce4ec;
+      --petal: #f8bbd0;
+      --deep: #880e4f;
+      --soft: #fff0f5;
+      --gold: #f4a7b9;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--soft);
+      color: var(--deep);
+      cursor: default;
+    }
+
+    /* PETALS */
+    .petal-bg {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .petal {
+      position: absolute; font-size: 1.6rem;
+      animation: fallPetal linear infinite;
+      opacity: 0.7;
+    }
+    @keyframes fallPetal {
+      0%   { transform: translateY(-60px) rotate(0deg) scale(1); opacity: 0.8; }
+      100% { transform: translateY(110vh) rotate(540deg) scale(0.5); opacity: 0; }
+    }
+
+    /* LANDING */
+    #landing {
+      position: relative; height: 100vh; display: flex;
+      flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; z-index: 1; padding: 20px;
+      background: radial-gradient(ellipse at 50% 40%, #ffe0ec 0%, #fce4ec 40%, #f8bbd0 100%);
+    }
+    #landing::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='1' fill='%23e8336d' opacity='0.15'/%3E%3C/svg%3E") repeat;
+      pointer-events: none;
+    }
+
+    .landing-envelope {
+      font-size: 5rem; margin-bottom: 10px;
+      animation: envelopePulse 2s ease-in-out infinite;
+    }
+    @keyframes envelopePulse {
+      0%,100% { transform: scale(1) rotate(-3deg); }
+      50% { transform: scale(1.1) rotate(3deg); }
+    }
+
+    .landing-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 9vw, 5rem);
+      color: var(--rose);
+      text-shadow: 0 2px 20px rgba(232,51,109,0.3);
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+    .landing-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 3.5vw, 1.4rem);
+      color: var(--deep);
+      opacity: 0.8;
+      margin-bottom: 40px;
+    }
+
+    .enter-btn {
+      background: linear-gradient(135deg, var(--rose), var(--deep));
+      color: white; border: none;
+      padding: clamp(14px, 3vw, 18px) clamp(36px, 8vw, 60px);
+      font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+      font-family: 'Playfair Display', serif;
+      border-radius: 100px;
+      cursor: pointer;
+      box-shadow: 0 8px 30px rgba(232,51,109,0.45);
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative; overflow: hidden;
+    }
+    .enter-btn::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.25), transparent);
+      border-radius: inherit;
+    }
+    .enter-btn:active { transform: scale(0.96); }
+    .enter-btn:hover {
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 16px 40px rgba(232,51,109,0.55);
+    }
+
+    .hearts-row {
+      display: flex; gap: 10px; margin-top: 28px; justify-content: center;
+    }
+    .hearts-row span {
+      font-size: 1.5rem;
+      animation: heartBeat 1.4s ease-in-out infinite;
+    }
+    .hearts-row span:nth-child(2) { animation-delay: 0.2s; }
+    .hearts-row span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes heartBeat {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    /* MUSIC PILL */
+    #musicPill {
+      position: fixed; bottom: 18px; right: 18px;
+      background: white;
+      border-radius: 50px;
+      padding: 10px 16px;
+      display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 6px 24px rgba(232,51,109,0.25);
+      z-index: 9999;
+      transition: all 0.3s;
+    }
+    #musicPill .note { font-size: 1.1rem; animation: noteBounce 1.2s ease-in-out infinite; }
+    @keyframes noteBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+    #musicPill button {
+      background: var(--rose); color: white; border: none;
+      width: 34px; height: 34px; border-radius: 50%;
+      cursor: pointer; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #musicPill span.label {
+      font-size: 0.75rem; color: var(--rose); font-weight: 600; letter-spacing: 0.5px;
+    }
+
+    /* PAGE TRANSITIONS */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* FADE IN */
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .anim-in { animation: fadeSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+    /* CLICK HEARTS */
+    .click-heart {
+      position: fixed; pointer-events: none; z-index: 9998;
+      font-size: 2rem;
+      animation: clickHeartAnim 1.5s forwards;
+    }
+    @keyframes clickHeartAnim {
+      0%   { opacity: 1; transform: translateY(0) scale(0.5); }
+      30%  { transform: translateY(-30px) scale(1.3); }
+      100% { opacity: 0; transform: translateY(-100px) scale(0.8); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PETAL RAIN -->
+<div class="petal-bg" id="petalBg"></div>
+
+<!-- BACKGROUND MUSIC -->
+<audio id="bgMusic" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<!-- MUSIC PILL -->
+<div id="musicPill">
+  <span class="note">🎵</span>
+  <span class="label">Our Song</span>
+  <button id="musicBtn" onclick="toggleMusic()">▶</button>
+</div>
+
+<!-- LANDING PAGE -->
+<div id="landing" class="page active" onclick="createClickHeart(event)">
+  <div class="landing-envelope">💌</div>
+  <h1 class="landing-title">For Niharika</h1>
+  <p class="landing-subtitle">A love story crafted just for you, by Aru</p>
+  <button class="enter-btn" onclick="goTo('dashboard')">Open With Love 💕</button>
+  <div class="hearts-row">
+    <span>🌹</span><span>💖</span><span>🌹</span>
+  </div>
+</div>
+
+<!-- ALL OTHER PAGES ARE IN SEPARATE FILES, LOADED VIA IFRAME/NAV -->
+<!-- DASHBOARD -->
+<div id="dashboard" class="page"></div>
+
+<script>
+  // ─── PETAL RAIN ───
+  const petalEmojis = ['🌸','🌺','🌹','💮','🪷'];
+  const petalBg = document.getElementById('petalBg');
+  for (let i = 0; i < 22; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.animationDuration = (5 + Math.random() * 8) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    p.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+    petalBg.appendChild(p);
+  }
+
+  // ─── CLICK HEARTS ───
+  document.addEventListener('click', createClickHeart);
+  function createClickHeart(e) {
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') return;
+    const el = document.createElement('div');
+    el.className = 'click-heart';
+    el.textContent = ['❤️','💖','💕','🌹'][Math.floor(Math.random()*4)];
+    el.style.left = e.clientX + 'px';
+    el.style.top = e.clientY + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1600);
+  }
+
+  // ─── MUSIC ───
+  const audio = document.getElementById('bgMusic');
+  const musicBtn = document.getElementById('musicBtn');
+  let musicPlaying = false;
+
+  function startMusic() {
+    audio.volume = 0.4;
+    audio.play().then(() => {
+      musicPlaying = true;
+      musicBtn.textContent = '⏸';
+    }).catch(() => {});
+  }
+
+  function toggleMusic() {
+    if (musicPlaying) {
+      audio.pause(); musicBtn.textContent = '▶'; musicPlaying = false;
+    } else {
+      audio.play(); musicBtn.textContent = '⏸'; musicPlaying = true;
+    }
+  }
+
+  // Auto-play on first interaction
+  document.addEventListener('click', function autoPlay() {
+    startMusic();
+    document.removeEventListener('click', autoPlay);
+  }, { once: true });
+
+  // ─── NAVIGATION ───
+  function goTo(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById(page);
+    if (target) {
+      target.classList.add('active');
+      target.classList.remove('anim-in');
+      void target.offsetWidth;
+      target.classList.add('anim-in');
+    } else {
+      window.location.href = page + '.html';
+    }
+  }
+
+  window.goTo = goTo;
+</script>
+</body>
+</html>

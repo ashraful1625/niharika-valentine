@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Our Photos 📸 — For Niharika</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --rose:#e8336d;--blush:#fce4ec;--petal:#f8bbd0;--deep:#880e4f;--soft:#fff0f5; }
+    * { margin:0;padding:0;box-sizing:border-box; }
+    body { font-family:'Lato',sans-serif;background:var(--soft);color:var(--deep);min-height:100vh;overflow-x:hidden; }
+
+    .petal-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .petal{position:absolute;animation:fallPetal linear infinite;opacity:.5}
+    @keyframes fallPetal{0%{transform:translateY(-60px) rotate(0deg);opacity:.6}100%{transform:translateY(110vh) rotate(540deg);opacity:0}}
+
+    .back-btn{position:fixed;top:16px;left:16px;z-index:9999;background:white;border:2px solid var(--petal);color:var(--rose);border-radius:50px;padding:8px 18px;font-size:.9rem;cursor:pointer;box-shadow:0 4px 16px rgba(232,51,109,.15);transition:all .25s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+    .back-btn:hover{background:var(--rose);color:white;border-color:var(--rose)}
+    #musicPill{position:fixed;bottom:18px;right:18px;background:white;border-radius:50px;padding:10px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 24px rgba(232,51,109,.25);z-index:9999}
+    #musicPill .note{font-size:1.1rem;animation:noteBounce 1.2s ease-in-out infinite}
+    @keyframes noteBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+    #musicPill button{background:var(--rose);color:white;border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:1rem}
+    #musicPill span.label{font-size:.75rem;color:var(--rose);font-weight:600;letter-spacing:.5px}
+
+    .ph-header{text-align:center;padding:60px 20px 24px;position:relative;z-index:10}
+    .ph-header h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,7vw,3rem);color:var(--rose);text-shadow:0 2px 20px rgba(232,51,109,.3)}
+    .ph-header p{font-family:'Playfair Display',serif;font-style:italic;opacity:.7;margin-top:6px;font-size:clamp(.9rem,2.5vw,1.1rem)}
+
+    /* SWIPER */
+    .swiper-wrap{
+      position:relative;z-index:10;
+      max-width:420px;margin:0 auto;
+      padding:0 16px 100px;
+    }
+
+    .cards-stage{
+      position:relative;
+      height:500px;
+      touch-action:none;
+      user-select:none;
+    }
+
+    .photo-card{
+      position:absolute;inset:0;
+      background:white;
+      border-radius:28px;
+      box-shadow:0 16px 50px rgba(232,51,109,.2);
+      overflow:hidden;
+      cursor:grab;
+      transition:transform .25s ease, box-shadow .25s;
+      border:3px solid var(--petal);
+    }
+    .photo-card:active{cursor:grabbing}
+
+    .photo-card .card-img{
+      width:100%;height:380px;
+      object-fit:cover;
+      background:var(--blush);
+      display:flex;align-items:center;justify-content:center;
+      font-size:5rem;
+    }
+    .photo-card .card-img img{width:100%;height:100%;object-fit:cover;display:block}
+
+    .card-bottom{
+      padding:14px 18px;
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    .card-caption{font-family:'Playfair Display',serif;font-style:italic;font-size:.95rem;color:var(--deep)}
+
+    .dl-btn{
+      background:var(--rose);color:white;border:none;
+      padding:8px 18px;border-radius:50px;font-size:.85rem;
+      cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:6px;
+      text-decoration:none;
+    }
+    .dl-btn:hover{background:var(--deep);transform:scale(1.05)}
+
+    /* STACKED EFFECT */
+    .photo-card:nth-child(2){transform:rotate(3deg) scale(.96) translateY(8px);z-index:1}
+    .photo-card:nth-child(3){transform:rotate(-2deg) scale(.93) translateY(16px);z-index:0}
+    .photo-card.top{z-index:5}
+
+    /* SWIPE HINT */
+    .swipe-hint{
+      text-align:center;margin-top:16px;font-size:.85rem;color:#ccc;
+      animation:hintFade 2s ease-in-out infinite;
+    }
+    @keyframes hintFade{0%,100%{opacity:.6}50%{opacity:1}}
+
+    /* COUNTER */
+    .photo-counter{
+      text-align:center;margin-top:12px;
+      font-family:'Playfair Display',serif;font-size:.9rem;color:var(--rose);
+    }
+    .dots{display:flex;justify-content:center;gap:8px;margin-top:10px}
+    .dot{width:10px;height:10px;background:var(--petal);border-radius:50%;transition:all .25s;cursor:pointer}
+    .dot.active{background:var(--rose);transform:scale(1.3)}
+
+    /* SWIPE INDICATOR */
+    .swipe-direction{
+      position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      font-size:2.5rem;opacity:0;pointer-events:none;z-index:20;
+      transition:opacity .15s;
+    }
+
+    /* LIKE button */
+    .like-btn{
+      background:none;border:none;font-size:1.8rem;cursor:pointer;
+      transition:transform .2s;
+    }
+    .like-btn:active{transform:scale(1.5)}
+    .liked{animation:likeAnim .4s}
+    @keyframes likeAnim{0%{transform:scale(1)}50%{transform:scale(1.6)}100%{transform:scale(1)}}
+
+    .click-heart{position:fixed;pointer-events:none;z-index:9998;font-size:2rem;animation:chAnim 1.5s forwards}
+    @keyframes chAnim{0%{opacity:1;transform:translateY(0) scale(.5)}30%{transform:translateY(-30px) scale(1.3)}100%{opacity:0;transform:translateY(-100px) scale(.8)}}
+  </style>
+</head>
+<body>
+<div class="petal-bg" id="petalBg"></div>
+<audio id="bgMusic" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+<a href="dashboard.html" class="back-btn">← Dashboard</a>
+<div id="musicPill">
+  <span class="note">🎵</span><span class="label">Our Song</span>
+  <button id="musicBtn" onclick="toggleMusic()">▶</button>
+</div>
+
+<div class="ph-header">
+  <h1>Our Memories 📸</h1>
+  <p>Swipe through our beautiful moments together</p>
+</div>
+
+<div class="swiper-wrap">
+  <div class="cards-stage" id="cardsStage">
+    <!-- Cards injected by JS -->
+  </div>
+  <div class="swipe-hint">← Swipe to explore memories →</div>
+  <div class="photo-counter" id="photoCounter">1 / 4</div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<script>
+// ── Photo data — update URLs to your GitHub raw URLs ──
+const photos = [
+  {
+    url: 'https://raw.githubusercontent.com/ashraful1625/niharika-valentine/main/IMG_20260405_230355.jpg%20(1).jpeg',
+    caption: 'My favourite smile 💕',
+    filename: 'niharika_1.jpg'
+  },
+  {
+    url: 'https://raw.githubusercontent.com/ashraful1625/niharika-valentine/main/IMG_20260405_230450.jpg%20(1).jpeg',
+    caption: 'You light up my world 🌟',
+    filename: 'niharika_2.jpg'
+  },
+  {
+    url: 'https://raw.githubusercontent.com/ashraful1625/niharika-valentine/main/IMG_20260405_230603.jpg%20(1).jpeg',
+    caption: 'Every moment with you is magic ✨',
+    filename: 'niharika_3.jpg'
+  },
+  {
+    url: 'https://raw.githubusercontent.com/ashraful1625/niharika-valentine/main/IMG_20260405_230754.jpg%20(1).jpeg',
+    caption: 'My heart, my Niharika 🌹',
+    filename: 'niharika_4.jpg'
+  }
+];
+
+let currentIdx = 0;
+const stage = document.getElementById('cardsStage');
+const dotsContainer = document.getElementById('dots');
+
+function buildCards() {
+  stage.innerHTML = '';
+  // Show 3 cards stacked (current + 2 behind)
+  for (let offset = 2; offset >= 0; offset--) {
+    const idx = (currentIdx + offset) % photos.length;
+    const card = createCard(photos[idx], offset === 0, idx);
+    stage.appendChild(card);
+  }
+  buildDots();
+  updateCounter();
+}
+
+function createCard(photo, isTop, idx) {
+  const card = document.createElement('div');
+  card.className = 'photo-card' + (isTop ? ' top' : '');
+
+  const imgWrap = document.createElement('div');
+  imgWrap.className = 'card-img';
+
+  const img = document.createElement('img');
+  img.src = photo.url;
+  img.alt = photo.caption;
+  img.onerror = function() {
+    imgWrap.innerHTML = '🖼️';
+    imgWrap.style.background = 'linear-gradient(135deg,#fce4ec,#f8bbd0)';
+  };
+  imgWrap.appendChild(img);
+
+  const bottom = document.createElement('div');
+  bottom.className = 'card-bottom';
+
+  const caption = document.createElement('div');
+  caption.className = 'card-caption';
+  caption.textContent = photo.caption;
+
+  const likeBtn = document.createElement('button');
+  likeBtn.className = 'like-btn';
+  likeBtn.textContent = '🤍';
+  let liked = false;
+  likeBtn.onclick = function(e) {
+    e.stopPropagation();
+    liked = !liked;
+    likeBtn.textContent = liked ? '❤️' : '🤍';
+    likeBtn.classList.add('liked');
+    setTimeout(() => likeBtn.classList.remove('liked'), 400);
+    if (liked) spawnHearts(e.clientX, e.clientY);
+  };
+
+  const dlBtn = document.createElement('a');
+  dlBtn.className = 'dl-btn';
+  dlBtn.href = photo.url;
+  dlBtn.download = photo.filename;
+  dlBtn.target = '_blank';
+  dlBtn.innerHTML = '⬇ Save';
+  dlBtn.onclick = e => e.stopPropagation();
+
+  bottom.appendChild(caption);
+
+  const btnRow = document.createElement('div');
+  btnRow.style.display = 'flex'; btnRow.style.gap = '8px'; btnRow.style.alignItems = 'center';
+  btnRow.appendChild(likeBtn);
+  btnRow.appendChild(dlBtn);
+  bottom.appendChild(btnRow);
+
+  card.appendChild(imgWrap);
+  card.appendChild(bottom);
+
+  if (isTop) addSwipe(card);
+  return card;
+}
+
+function spawnHearts(x, y) {
+  for (let i = 0; i < 5; i++) {
+    const el = document.createElement('div'); el.className = 'click-heart';
+    el.textContent = '❤️';
+    el.style.left = (x + (Math.random()-0.5)*60) + 'px';
+    el.style.top = (y + (Math.random()-0.5)*40) + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1600);
+  }
+}
+
+function addSwipe(card) {
+  let startX = 0, startY = 0, diffX = 0;
+  let dragging = false;
+
+  function onStart(x, y) { startX = x; startY = y; dragging = true; card.style.transition = 'none'; }
+  function onMove(x, y) {
+    if (!dragging) return;
+    diffX = x - startX;
+    const rot = diffX * 0.1;
+    card.style.transform = `translateX(${diffX}px) rotate(${rot}deg)`;
+  }
+  function onEnd() {
+    if (!dragging) return;
+    dragging = false;
+    card.style.transition = 'transform .4s cubic-bezier(.25,.8,.25,1)';
+    if (Math.abs(diffX) > 80) {
+      const dir = diffX > 0 ? 1 : -1;
+      card.style.transform = `translateX(${dir * 500}px) rotate(${dir * 20}deg)`;
+      if (dir > 0) {
+        currentIdx = (currentIdx - 1 + photos.length) % photos.length;
+      } else {
+        currentIdx = (currentIdx + 1) % photos.length;
+      }
+      setTimeout(buildCards, 350);
+    } else {
+      card.style.transform = '';
+    }
+    diffX = 0;
+  }
+
+  card.addEventListener('touchstart', e => onStart(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+  card.addEventListener('touchmove', e => onMove(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+  card.addEventListener('touchend', onEnd);
+  card.addEventListener('mousedown', e => onStart(e.clientX, e.clientY));
+  window.addEventListener('mousemove', e => { if (dragging) onMove(e.clientX, e.clientY); });
+  window.addEventListener('mouseup', onEnd);
+}
+
+function buildDots() {
+  dotsContainer.innerHTML = '';
+  photos.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === currentIdx ? ' active' : '');
+    d.onclick = () => { currentIdx = i; buildCards(); };
+    dotsContainer.appendChild(d);
+  });
+}
+
+function updateCounter() {
+  document.getElementById('photoCounter').textContent = `${currentIdx + 1} / ${photos.length}`;
+}
+
+buildCards();
+
+// PETALS
+const emojis = ['🌸','🌺','🌹','💮','🪷'];
+const bg = document.getElementById('petalBg');
+for (let i = 0; i < 18; i++) {
+  const p = document.createElement('div'); p.className = 'petal';
+  p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+  p.style.left = Math.random() * 100 + 'vw';
+  p.style.animationDuration = (5 + Math.random() * 9) + 's';
+  p.style.animationDelay = (Math.random() * 10) + 's';
+  p.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+  bg.appendChild(p);
+}
+
+// CLICK HEARTS
+document.addEventListener('click', function(e) {
+  if (e.target.tagName === 'BUTTON' || e.target.closest('a') || e.target.closest('.photo-card')) return;
+  const el = document.createElement('div'); el.className = 'click-heart';
+  el.textContent = ['❤️','💖','💕','🌹'][Math.floor(Math.random()*4)];
+  el.style.left = e.clientX + 'px'; el.style.top = e.clientY + 'px';
+  document.body.appendChild(el); setTimeout(() => el.remove(), 1600);
+});
+
+// MUSIC
+const audio = document.getElementById('bgMusic');
+const btn = document.getElementById('musicBtn');
+let playing = false;
+function toggleMusic() {
+  if (playing) { audio.pause(); btn.textContent = '▶'; playing = false; }
+  else { audio.play(); btn.textContent = '⏸'; playing = true; }
+}
+document.addEventListener('click', function a() {
+  audio.volume = 0.4; audio.play().then(() => { playing = true; btn.textContent = '⏸'; }).catch(()=>{});
+  document.removeEventListener('click', a);
+}, { once: true });
+</script>
+</body>
+</html>

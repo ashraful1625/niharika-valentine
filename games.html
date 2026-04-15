@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Fun Games 🎮 — For Niharika</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--rose:#e8336d;--blush:#fce4ec;--petal:#f8bbd0;--deep:#880e4f;--soft:#fff0f5}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Lato',sans-serif;background:var(--soft);color:var(--deep);min-height:100vh;overflow-x:hidden}
+
+    .petal-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .petal{position:absolute;animation:fallPetal linear infinite;opacity:.5}
+    @keyframes fallPetal{0%{transform:translateY(-60px) rotate(0deg);opacity:.6}100%{transform:translateY(110vh) rotate(540deg);opacity:0}}
+
+    .back-btn{position:fixed;top:16px;left:16px;z-index:9999;background:white;border:2px solid var(--petal);color:var(--rose);border-radius:50px;padding:8px 18px;font-size:.9rem;cursor:pointer;box-shadow:0 4px 16px rgba(232,51,109,.15);transition:all .25s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+    .back-btn:hover{background:var(--rose);color:white;border-color:var(--rose)}
+    #musicPill{position:fixed;bottom:18px;right:18px;background:white;border-radius:50px;padding:10px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 24px rgba(232,51,109,.25);z-index:9999}
+    #musicPill .note{font-size:1.1rem;animation:noteBounce 1.2s ease-in-out infinite}
+    @keyframes noteBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+    #musicPill button{background:var(--rose);color:white;border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:1rem}
+    #musicPill span.label{font-size:.75rem;color:var(--rose);font-weight:600;letter-spacing:.5px}
+
+    .g-header{text-align:center;padding:60px 20px 24px;position:relative;z-index:10}
+    .g-header h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,7vw,3rem);color:var(--rose)}
+    .g-header p{font-family:'Playfair Display',serif;font-style:italic;opacity:.7;margin-top:6px;font-size:clamp(.9rem,2.5vw,1.1rem)}
+
+    /* GAME SELECTOR */
+    .game-tabs{display:flex;gap:10px;justify-content:center;padding:0 16px 20px;position:relative;z-index:10;flex-wrap:wrap}
+    .tab-btn{
+      background:white;border:2px solid var(--petal);color:var(--deep);
+      border-radius:50px;padding:10px 20px;font-size:.9rem;cursor:pointer;
+      transition:all .25s;font-family:'Lato',sans-serif;
+    }
+    .tab-btn.active,.tab-btn:hover{background:var(--rose);color:white;border-color:var(--rose)}
+
+    /* GAME AREA */
+    .game-area{
+      max-width:440px;margin:0 auto;
+      padding:0 16px 100px;
+      position:relative;z-index:10;
+      display:none;
+    }
+    .game-area.active{display:block;animation:fadeUp .5s cubic-bezier(.16,1,.3,1)}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+    .game-card{
+      background:white;border-radius:28px;padding:28px 22px;
+      box-shadow:0 10px 40px rgba(232,51,109,.15);
+      border:2px solid var(--petal);text-align:center;
+    }
+
+    .game-title{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--rose);margin-bottom:6px}
+    .game-subtitle{font-size:.9rem;color:#bbb;margin-bottom:20px}
+
+    .game-btn{
+      background:linear-gradient(135deg,var(--rose),var(--deep));
+      color:white;border:none;padding:14px 36px;
+      border-radius:50px;font-size:1rem;cursor:pointer;
+      transition:all .3s;box-shadow:0 6px 20px rgba(232,51,109,.35);
+      font-family:'Playfair Display',serif;
+    }
+    .game-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 12px 30px rgba(232,51,109,.45)}
+    .game-btn:active{transform:scale(.97)}
+
+    /* ── GAME 1: Do You Love Me ── */
+    .love-question{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--deep);margin:20px 0;line-height:1.5}
+    .answer-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:16px 0}
+    .ans-btn{
+      padding:14px 30px;border-radius:50px;border:2px solid;
+      font-size:1rem;cursor:pointer;transition:all .3s;font-family:'Lato',sans-serif;font-weight:700;
+    }
+    .ans-yes{background:var(--rose);color:white;border-color:var(--rose)}
+    .ans-yes:hover{transform:scale(1.05) translateY(-3px)}
+    .ans-no{background:white;color:var(--rose);border-color:var(--petal)}
+    .ans-no:hover{transform:scale(0.9)!important;font-size:.85rem!important}
+    #noBtn{position:relative;transition:all .2s}
+    .result-msg{
+      font-family:'Playfair Display',serif;font-size:1.1rem;
+      color:var(--deep);line-height:1.7;margin-top:16px;padding:16px;
+      background:var(--blush);border-radius:16px;display:none;
+    }
+    .result-msg.show{display:block;animation:fadeUp .4s}
+
+    /* ── GAME 2: Love Calculator ── */
+    .calc-input-row{display:flex;flex-direction:column;gap:12px;margin:16px 0}
+    .calc-input-row input{
+      width:100%;padding:14px 18px;border:2px solid var(--petal);border-radius:50px;
+      font-size:1rem;text-align:center;outline:none;font-family:'Lato',sans-serif;
+      transition:border .2s;
+    }
+    .calc-input-row input:focus{border-color:var(--rose)}
+    .calc-result-wrap{margin-top:20px;display:none}
+    .calc-result-wrap.show{display:block;animation:fadeUp .4s}
+    .calc-bar-bg{background:var(--blush);border-radius:50px;height:18px;overflow:hidden;margin:12px 0}
+    .calc-bar-fill{height:100%;background:linear-gradient(90deg,var(--rose),var(--deep));border-radius:50px;width:0%;transition:width 1.5s cubic-bezier(.25,.8,.25,1)}
+    .calc-percent{font-family:'Playfair Display',serif;font-size:2.5rem;color:var(--rose);font-weight:700}
+    .calc-msg{font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;color:#888;margin-top:8px;line-height:1.6}
+
+    /* ── GAME 3: Memory Match ── */
+    .memory-grid{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0;
+    }
+    .mem-card{
+      aspect-ratio:1;border-radius:12px;background:linear-gradient(135deg,var(--rose),var(--deep));
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.6rem;cursor:pointer;
+      transition:transform .25s;
+      box-shadow:0 4px 12px rgba(232,51,109,.2);
+      position:relative;
+      transform-style:preserve-3d;
+    }
+    .mem-card.flipped{transform:rotateY(180deg)}
+    .mem-card.matched{background:linear-gradient(135deg,#4caf50,#2e7d32);transform:scale(.95)}
+    .mem-front,.mem-back{
+      position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+      border-radius:12px;backface-visibility:hidden;font-size:1.6rem;
+    }
+    .mem-front{background:linear-gradient(135deg,var(--rose),var(--deep));color:white;font-size:1.2rem}
+    .mem-back{background:white;transform:rotateY(180deg)}
+    .mem-score{font-family:'Playfair Display',serif;font-size:1rem;color:var(--rose);margin-bottom:8px}
+    .mem-win{display:none;font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--deep);text-align:center;padding:16px;background:var(--blush);border-radius:16px;margin-top:12px}
+    .mem-win.show{display:block;animation:fadeUp .4s}
+
+    .click-heart{position:fixed;pointer-events:none;z-index:9998;font-size:2rem;animation:chAnim 1.5s forwards}
+    @keyframes chAnim{0%{opacity:1;transform:translateY(0) scale(.5)}30%{transform:translateY(-30px) scale(1.3)}100%{opacity:0;transform:translateY(-100px) scale(.8)}}
+  </style>
+</head>
+<body>
+<div class="petal-bg" id="petalBg"></div>
+<audio id="bgMusic" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+<a href="dashboard.html" class="back-btn">← Dashboard</a>
+<div id="musicPill">
+  <span class="note">🎵</span><span class="label">Our Song</span>
+  <button id="musicBtn" onclick="toggleMusic()">▶</button>
+</div>
+
+<div class="g-header">
+  <h1>Love Games 🎮</h1>
+  <p>Fun little games made just for you, Niharika</p>
+</div>
+
+<div class="game-tabs">
+  <button class="tab-btn active" onclick="showGame('game1',this)">💕 Do You Love Me?</button>
+  <button class="tab-btn" onclick="showGame('game2',this)">💘 Love Calculator</button>
+  <button class="tab-btn" onclick="showGame('game3',this)">🧠 Memory Match</button>
+</div>
+
+<!-- GAME 1 -->
+<div class="game-area active" id="game1">
+  <div class="game-card">
+    <div class="game-title">💕 Do You Love Me?</div>
+    <div class="game-subtitle">An important question, with only one right answer…</div>
+    <div class="love-question" id="loveQ">Niharika, do you love Aru? 🥺</div>
+    <div class="answer-btns">
+      <button class="ans-btn ans-yes" onclick="answerYes()">Yes! ❤️</button>
+      <button class="ans-btn ans-no" id="noBtn" onclick="moveNoBtn()" onmouseover="moveNoBtn()">No 😶</button>
+    </div>
+    <div class="result-msg" id="loveResult"></div>
+  </div>
+</div>
+
+<!-- GAME 2 -->
+<div class="game-area" id="game2">
+  <div class="game-card">
+    <div class="game-title">💘 Love Calculator</div>
+    <div class="game-subtitle">Find out how perfectly matched you are</div>
+    <div class="calc-input-row">
+      <input id="name1" placeholder="Your name (Niharika)" value="Niharika">
+      <input id="name2" placeholder="Your lover's name (Aru)" value="Aru">
+    </div>
+    <button class="game-btn" onclick="calculateLove()">Calculate Our Love 💖</button>
+    <div class="calc-result-wrap" id="calcResult">
+      <div class="calc-percent" id="calcPercent">0%</div>
+      <div class="calc-bar-bg"><div class="calc-bar-fill" id="calcBar"></div></div>
+      <div class="calc-msg" id="calcMsg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- GAME 3 -->
+<div class="game-area" id="game3">
+  <div class="game-card">
+    <div class="game-title">🧠 Love Memory Match</div>
+    <div class="game-subtitle">Find all matching pairs — test your memory!</div>
+    <div class="mem-score" id="memScore">Pairs found: 0 / 8</div>
+    <div class="memory-grid" id="memGrid"></div>
+    <div class="mem-win" id="memWin">🎉 You matched them all! Just like Aru & Niharika — a perfect match! 💖</div>
+    <button class="game-btn" onclick="initMemory()" style="margin-top:16px">Shuffle & Restart 🔀</button>
+  </div>
+</div>
+
+<script>
+function showGame(id, el) {
+  document.querySelectorAll('.game-area').forEach(g => g.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ── GAME 1 ──
+const yesLines = [
+  { q:"I knew it!! 🥹 You make my whole world glow, Niharika!", r:"Aru is doing a little happy dance right now. And crying. Happily. 💖 You are everything." },
+  { q:"Say it again? I just want to hear it forever 🌹", r:"Your yes is the most beautiful word Aru has ever heard. Ever. EVER. 💕" },
+  { q:"See? I knew you did 😊💘", r:"Aru is smiling so wide right now. You are his whole heart. 🌹" }
+];
+let yesCount = 0;
+const noPositions = [[null,null],[40,null],[null,40],[40,40],[null,null]];
+let noPresses = 0;
+
+function answerYes() {
+  const line = yesLines[Math.min(yesCount, yesLines.length-1)];
+  document.getElementById('loveQ').textContent = line.q;
+  const r = document.getElementById('loveResult');
+  r.textContent = line.r;
+  r.classList.add('show');
+  yesCount++;
+  for(let i=0;i<8;i++) setTimeout(()=>spawnHeart(),i*80);
+}
+
+function moveNoBtn() {
+  noPresses++;
+  const btn = document.getElementById('noBtn');
+  const wrap = btn.parentElement;
+  const w = wrap.offsetWidth - btn.offsetWidth;
+  const h = 60;
+  const x = Math.random() * w;
+  const y = (Math.random() - 0.5) * h;
+  btn.style.position = 'relative';
+  btn.style.left = x + 'px';
+  btn.style.top = y + 'px';
+  if (noPresses > 3) {
+    btn.textContent = 'Maybe? 🥺';
+    btn.style.fontSize = '.8rem';
+  }
+  if (noPresses > 6) btn.style.display = 'none';
+}
+
+// ── GAME 2 ──
+function calculateLove() {
+  const n1 = document.getElementById('name1').value.trim() || 'Niharika';
+  const n2 = document.getElementById('name2').value.trim() || 'Aru';
+  const combined = (n1 + n2).toLowerCase().replace(/\s/g,'');
+  // Special case for our pair
+  let final = 99;
+  if (combined.includes('niharika') || combined.includes('aru')) {
+    final = 99;
+  } else {
+    // deterministic from names
+    let hash = 0;
+    for (let c of combined) hash += c.charCodeAt(0);
+    final = 70 + (hash % 28);
+  }
+
+  const msgs = {
+    99: `${n1} + ${n2} = 99% Perfect Love! ✨\n\nSome matches are written by the universe itself. This is one of them. You two are made for each other — today, tomorrow, and every day after. 💖`,
+    default: `${n1} + ${n2} = ${final}% Compatibility! 💕\n\nYou two have a beautiful connection. With love, understanding, and a little magic — this is a match worth celebrating. 🌹`
+  };
+
+  const wrap = document.getElementById('calcResult');
+  const pct = document.getElementById('calcPercent');
+  const bar = document.getElementById('calcBar');
+  const msg = document.getElementById('calcMsg');
+
+  pct.textContent = '0%';
+  bar.style.width = '0%';
+  msg.textContent = '';
+  wrap.classList.add('show');
+
+  let cur = 0;
+  const interval = setInterval(() => {
+    cur += Math.floor(Math.random() * 10) + 5;
+    if (cur >= final) {
+      cur = final;
+      clearInterval(interval);
+      pct.textContent = cur + '% 💖';
+      bar.style.width = cur + '%';
+      msg.textContent = final === 99 ? msgs[99] : msgs.default;
+      for(let i=0;i<10;i++) setTimeout(()=>spawnHeart(),i*60);
+    } else {
+      pct.textContent = cur + '%';
+      bar.style.width = cur + '%';
+    }
+  }, 80);
+}
+
+// ── GAME 3 ──
+const memEmojis = ['🌹','💖','💍','🧸','💋','🤗','🎀','🌸'];
+let memBoard = [], memFlipped = [], memMatched = [], memLocked = false;
+let memPairs = 0;
+
+function initMemory() {
+  const pairs = [...memEmojis, ...memEmojis];
+  pairs.sort(() => Math.random() - 0.5);
+  memBoard = pairs;
+  memFlipped = []; memMatched = []; memPairs = 0; memLocked = false;
+  document.getElementById('memScore').textContent = 'Pairs found: 0 / 8';
+  document.getElementById('memWin').classList.remove('show');
+
+  const grid = document.getElementById('memGrid');
+  grid.innerHTML = '';
+  pairs.forEach((emoji, i) => {
+    const card = document.createElement('div');
+    card.className = 'mem-card';
+    card.innerHTML = `<div class="mem-front">💕</div><div class="mem-back">${emoji}</div>`;
+    card.dataset.idx = i;
+    card.dataset.emoji = emoji;
+    card.onclick = () => flipCard(card);
+    grid.appendChild(card);
+  });
+}
+
+function flipCard(card) {
+  if (memLocked || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+  card.classList.add('flipped');
+  memFlipped.push(card);
+
+  if (memFlipped.length === 2) {
+    memLocked = true;
+    const [a, b] = memFlipped;
+    if (a.dataset.emoji === b.dataset.emoji) {
+      a.classList.add('matched'); b.classList.add('matched');
+      memMatched.push(a, b); memPairs++;
+      document.getElementById('memScore').textContent = `Pairs found: ${memPairs} / 8`;
+      memFlipped = []; memLocked = false;
+      if (memPairs === 8) {
+        setTimeout(() => {
+          document.getElementById('memWin').classList.add('show');
+          for(let i=0;i<15;i++) setTimeout(()=>spawnHeart(),i*80);
+        }, 400);
+      }
+    } else {
+      setTimeout(() => {
+        a.classList.remove('flipped'); b.classList.remove('flipped');
+        memFlipped = []; memLocked = false;
+      }, 900);
+    }
+  }
+}
+
+initMemory();
+
+// SPAWN HEART
+function spawnHeart() {
+  const el = document.createElement('div'); el.className = 'click-heart';
+  el.textContent = ['❤️','💖','💕','🌹'][Math.floor(Math.random()*4)];
+  el.style.left = (20 + Math.random() * 60) + 'vw';
+  el.style.top = (20 + Math.random() * 60) + 'vh';
+  document.body.appendChild(el); setTimeout(() => el.remove(), 1600);
+}
+
+// PETALS
+const emojis = ['🌸','🌺','🌹','💮','🪷'];
+const bg = document.getElementById('petalBg');
+for (let i = 0; i < 18; i++) {
+  const p = document.createElement('div'); p.className = 'petal';
+  p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+  p.style.left = Math.random() * 100 + 'vw';
+  p.style.animationDuration = (5 + Math.random() * 9) + 's';
+  p.style.animationDelay = (Math.random() * 10) + 's';
+  p.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+  bg.appendChild(p);
+}
+
+// CLICK HEARTS
+document.addEventListener('click', function(e) {
+  if (e.target.tagName === 'BUTTON' || e.target.closest('a') || e.target.closest('.mem-card')) return;
+  const el = document.createElement('div'); el.className = 'click-heart';
+  el.textContent = ['❤️','💖','💕','🌹'][Math.floor(Math.random()*4)];
+  el.style.left = e.clientX + 'px'; el.style.top = e.clientY + 'px';
+  document.body.appendChild(el); setTimeout(() => el.remove(), 1600);
+});
+
+// MUSIC
+const audio = document.getElementById('bgMusic');
+const btn = document.getElementById('musicBtn');
+let playing = false;
+function toggleMusic() {
+  if (playing) { audio.pause(); btn.textContent = '▶'; playing = false; }
+  else { audio.play(); btn.textContent = '⏸'; playing = true; }
+}
+document.addEventListener('click', function a() {
+  audio.volume = 0.4; audio.play().then(() => { playing = true; btn.textContent = '⏸'; }).catch(()=>{});
+  document.removeEventListener('click', a);
+}, { once: true });
+</script>
+</body>
+</html>
